@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情緒與壓力自我評估 - 香港催眠訓練學院</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        .option-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        .hidden { display: none; }
+
+        .logo-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #3b82f6;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <div id="app" class="max-w-xl w-full">
+        <!-- 開始介面 -->
+        <div id="start-screen" class="glass-card rounded-3xl p-8 text-center animate__animated animate__fadeIn">
+            <div class="mb-8">
+                <!-- 1. 最上方：學院名稱 -->
+                <div class="mb-4">
+                    <p class="text-slate-500 font-bold tracking-widest text-lg">香港催眠訓練學院</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-medium">Hypnosis Training Academy</p>
+                </div>
+
+                <!-- 2. 中間：Logo 圖案 -->
+                <div class="logo-container">
+                    <div class="logo-fallback">🧘</div>
+                    <img src="學院logo.jpg" alt="學院 Logo" id="main-logo" onerror="this.style.display='none'">
+                </div>
+                
+                <!-- 3. 下方：測試標題 -->
+                <div class="mt-6">
+                    <h1 class="text-2xl font-bold text-slate-800 mb-1">我現在的情緒如何？</h1>
+                    <div class="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
+                        情緒壓力指數
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-slate-600 mb-8 leading-relaxed text-lg font-medium">
+                理解自己的情緒和壓力情況能大大提高我們的覺察力。
+            </p>
+
+            <button onclick="startQuiz()" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-lg shadow-lg transform transition hover:-translate-y-1">
+                開始探索
+            </button>
+            <p class="mt-4 text-xs text-slate-400 italic">測驗預計耗時 3 分鐘</p>
+        </div>
+
+        <!-- 測驗介面 -->
+        <div id="quiz-screen" class="hidden glass-card rounded-3xl p-8 animate__animated animate__fadeIn">
+            <!-- 測驗頁也保留學院標識縮影 -->
+            <div class="text-center mb-4 border-b border-slate-50 pb-2">
+                <span class="text-[10px] text-slate-400 tracking-widest uppercase">Hypnosis Training Academy HK</span>
+            </div>
+
+            <div class="flex justify-between items-center mb-6 text-sm">
+                <div class="flex flex-col">
+                    <span id="progress-text" class="font-bold text-blue-600">題目 1 / 20</span>
+                </div>
+                <div class="w-32 h-2 bg-blue-100 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="progress-bar h-full bg-blue-500" style="width: 5%"></div>
+                </div>
+            </div>
+
+            <div id="question-container" class="mb-8 min-h-[80px] flex items-center">
+                <h2 id="question-text" class="text-xl font-medium text-slate-800 leading-snug">載入中...</h2>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="handleSelect(1)" class="option-btn w-full p-4 text-left border-2 border-slate-100 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-slate-700 font-medium group flex items-center">
+                    <span class="inline-block w-8 h-8 bg-slate-100 group-hover:bg-blue-200 rounded-lg text-center leading-8 mr-3 transition-colors shrink-0">A</span>
+                    <span id="opt-a">選項 A</span>
+                </button>
+                <button onclick="handleSelect(2)" class="option-btn w-full p-4 text-left border-2 border-slate-100 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-slate-700 font-medium group flex items-center">
+                    <span class="inline-block w-8 h-8 bg-slate-100 group-hover:bg-blue-200 rounded-lg text-center leading-8 mr-3 transition-colors shrink-0">B</span>
+                    <span id="opt-b">選項 B</span>
+                </button>
+                <button onclick="handleSelect(3)" class="option-btn w-full p-4 text-left border-2 border-slate-100 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-slate-700 font-medium group flex items-center">
+                    <span class="inline-block w-8 h-8 bg-slate-100 group-hover:bg-blue-200 rounded-lg text-center leading-8 mr-3 transition-colors shrink-0">C</span>
+                    <span id="opt-c">選項 C</span>
+                </button>
+                <button onclick="handleSelect(5)" class="option-btn w-full p-4 text-left border-2 border-slate-100 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-slate-700 font-medium group flex items-center">
+                    <span class="inline-block w-8 h-8 bg-slate-100 group-hover:bg-blue-200 rounded-lg text-center leading-8 mr-3 transition-colors shrink-0">D</span>
+                    <span id="opt-d">選項 D</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 結果介面 -->
+        <div id="result-screen" class="hidden glass-card rounded-3xl p-8 animate__animated animate__fadeIn">
+            <div class="text-center mb-6">
+                <p class="text-slate-500 font-medium">評估結果</p>
+                <div class="text-5xl font-bold text-blue-600 my-2" id="final-score">0</div>
+                <p class="text-xl font-bold text-slate-800" id="result-title">分析中...</p>
+            </div>
+
+            <div class="bg-blue-50 rounded-2xl p-6 mb-6 text-center">
+                <p id="result-desc" class="text-slate-700 leading-relaxed italic font-medium"></p>
+            </div>
+
+            <div class="border-t border-slate-100 pt-6">
+                <h3 class="font-bold text-slate-800 mb-3 flex items-center">
+                    <span class="mr-2 text-blue-500">📋</span> 專家建議：
+                </h3>
+                <p id="result-advice" class="text-slate-600 text-sm leading-relaxed mb-6"></p>
+                
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                    <p class="text-xs text-red-700 leading-tight">
+                        <strong>⚠️ 安全提醒：</strong>本測驗僅供參考。若您有傷害自己或他人的意念，請立即撥打撒瑪利亞防止自殺會熱線：2389 2222 或求助專業醫療機構。
+                    </p>
+                </div>
+                
+                <button onclick="location.reload()" class="w-full py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 transition shadow-lg">
+                    重新測試
+                </button>
+            </div>
+            
+            <footer class="mt-8 text-center text-[10px] text-slate-400 tracking-widest uppercase">
+                &copy; 香港催眠訓練學院 Hypnosis Training Academy HK
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "我感到無緣無故地心煩意亂，難以靜下心來。", a: "完全不覺得", b: "偶爾如此", c: "經常如此", d: "極度頻繁" },
+            { q: "面對未來，我感到希望渺茫或提不起勁。", a: "充滿希望", b: "有時擔憂", c: "感到沮喪", d: "徹底絕望" },
+            { q: "我發現自己變得很難入睡，或在深夜無故醒來。", a: "睡眠良好", b: "輕微失眠", c: "睡眠品質差", d: "嚴重失眠" },
+            { q: "在社交場合中，我感到莫名的壓力或想逃避。", a: "享受社交", b: "偶爾疲倦", c: "感到壓力", d: "恐懼社交" },
+            { q: "我感覺胸口悶堵，或有呼吸不順暢的感覺。", a: "身體放鬆", b: "輕微不適", c: "明顯悶堵", d: "嚴重呼吸困難" },
+            { q: "我對以往感興趣的事物失去了熱情。", a: "依然熱愛", b: "熱情減退", c: "感到乏味", d: "完全沒興趣" },
+            { q: "我發覺自己比以前更容易因小事發脾氣。", a: "情緒穩定", b: "偶爾急躁", c: "經常易怒", d: "無法控制情緒" },
+            { q: "潛意識裡，我覺得生活像是一場沒完沒了的苦役。", a: "很有意義", b: "有時疲累", c: "感到沉重", d: "徹底精疲力竭" },
+            { q: "我會不自覺地咬緊牙關或感到肩頸僵硬。", a: "肌肉放鬆", b: "輕微緊繃", c: "經常痠痛", d: "極度僵硬痛苦" },
+            { q: "思考問題時，我發現記憶力下降或難以集中精神。", a: "思路清晰", b: "偶爾分心", c: "經常斷片", d: "完全無法思考" },
+            { q: "我感到孤獨，即使身處人群中也覺得無人理解。", a: "感到連結", b: "偶爾孤單", c: "經常孤獨", d: "強烈疏離感" },
+            { q: "面對日常決策時（如吃什麼），我感到極度糾結。", a: "決斷迅速", b: "輕微猶豫", c: "猶豫不決", d: "無法做決定" },
+            { q: "我的胃部經常感到不適、脹氣或食慾異常。", a: "消化良好", b: "偶爾不適", c: "經常反胃", d: "嚴重食慾不振" },
+            { q: "我會反覆擔心一些還沒發生（甚至不會發生）的事。", a: "基本不擔心", b: "偶爾焦慮", c: "經常憂慮", d: "被恐懼淹沒" },
+            { q: "我感到情緒處於「爆發邊緣」，像飽和的海綿。", a: "還有空間", b: "稍微吃力", c: "接近飽和", d: "隨時崩潰" },
+            { q: "潛意識中，我常夢見被追逐、墜落或陷入困境。", a: "夢境平和", b: "偶爾惡夢", c: "經常不安", d: "長期受驚夢困擾" },
+            { q: "我感覺身體沉重，彷彿雙腿灌了鉛一樣。", a: "腳步輕盈", b: "輕微疲勞", c: "身體沉重", d: "行動極度困難" },
+            { q: "當別人在說話時，我會感到不耐煩或想切斷對話。", a: "耐心傾聽", b: "偶爾分神", c: "感到焦躁", d: "完全無法溝通" },
+            { q: "我覺得自己的一舉一動都在別人的審視之下。", a: "輕鬆自在", b: "輕微敏感", c: "相當在意", d: "極度自我懷疑" },
+            { q: "我渴望逃離現在的生活環境，去一個沒人的地方。", a: "享受當下", b: "偶爾想休假", c: "渴望逃避", d: "徹底想消失" }
+        ];
+
+        let currentStep = 0;
+        let totalScore = 0;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentStep >= questions.length) {
+                showResult();
+                return;
+            }
+            const q = questions[currentStep];
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('opt-a').innerText = q.a;
+            document.getElementById('opt-b').innerText = q.b;
+            document.getElementById('opt-c').innerText = q.c;
+            document.getElementById('opt-d').innerText = q.d;
+            
+            document.getElementById('progress-text').innerText = `題目 ${currentStep + 1} / ${questions.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentStep + 1) / questions.length) * 100}%`;
+        }
+
+        function handleSelect(score) {
+            totalScore += score;
+            currentStep++;
+            
+            const container = document.getElementById('quiz-screen');
+            container.classList.remove('animate__fadeIn');
+            void container.offsetWidth; 
+            container.classList.add('animate__fadeIn');
+            
+            showQuestion();
+        }
+
+        function showResult() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = totalScore;
+
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+            const advice = document.getElementById('result-advice');
+
+            if (totalScore <= 35) {
+                title.innerText = "情緒微風期";
+                desc.innerText = "心理韌性極佳";
+                advice.innerText = "恭喜你！你的內在生態非常平衡，擁有良好的自我調節能力。這是一個值得讚美的狀態，請繼續保持正念練習與健康的生活節奏。你目前的能量足以支持你追求更高的自我成長。";
+            } else if (totalScore <= 55) {
+                title.innerText = "情緒陰雨期";
+                desc.innerText = "輕微壓力負荷";
+                advice.innerText = "你正承受著現代生活的正常壓力。你的潛意識正在發出微弱的提醒，告訴你需要休息了。建議每週安排至少 2 小時的「Me Time」，遠離電子產品，嘗試簡單的冥想或腹式呼吸。";
+            } else if (totalScore <= 75) {
+                title.innerText = "情緒風暴期";
+                desc.innerText = "中度心理負荷";
+                advice.innerText = "警報已經響起。你正處於高度的情緒飽和狀態，身體的壓力反應已經相當明顯。此時的你可能感到身心俱疲，建議嘗試專業的催眠治療或心理諮詢，釋放長期積壓的情緒。";
+            } else {
+                title.innerText = "情緒海嘯期";
+                desc.innerText = "需立即尋求協助";
+                advice.innerText = "這是一個緊急信號。你的情緒負荷已遠超大腦所能承載的極限，可能已影響生理健康。我們強烈建議你立即尋求專業心理醫生、精神科醫生或臨床心理學家的協助。請記得，尋求幫助是勇敢的表現。";
+            }
+        }
+    </script>
+</body>
+</html>
